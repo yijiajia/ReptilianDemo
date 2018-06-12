@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.netMusic.dao.SongMapper" >
+  <resultMap id="BaseResultMap" type="com.netMusic.entity.Song" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="comment_thread_id" property="commentThreadId" jdbcType="VARCHAR" />
+    <result column="mp3url" property="mp3url" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="record_id" property="recordId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, comment_thread_id, mp3url, name, record_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.netMusic.entity.SongExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from song
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from song
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from song
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.netMusic.entity.SongExample" >
+    delete from song
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.netMusic.entity.Song" >
+    insert into song (id, comment_thread_id, mp3url, 
+      name, record_id)
+    values (#{id,jdbcType=BIGINT}, #{commentThreadId,jdbcType=VARCHAR}, #{mp3url,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{recordId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.netMusic.entity.Song" >
+    insert into song
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="commentThreadId != null" >
+        comment_thread_id,
+      </if>
+      <if test="mp3url != null" >
+        mp3url,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="recordId != null" >
+        record_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="commentThreadId != null" >
+        #{commentThreadId,jdbcType=VARCHAR},
+      </if>
+      <if test="mp3url != null" >
+        #{mp3url,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.netMusic.entity.SongExample" resultType="java.lang.Integer" >
+    select count(*) from song
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update song
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentThreadId != null" >
+        comment_thread_id = #{record.commentThreadId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mp3url != null" >
+        mp3url = #{record.mp3url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recordId != null" >
+        record_id = #{record.recordId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update song
+    set id = #{record.id,jdbcType=BIGINT},
+      comment_thread_id = #{record.commentThreadId,jdbcType=VARCHAR},
+      mp3url = #{record.mp3url,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      record_id = #{record.recordId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.netMusic.entity.Song" >
+    update song
+    <set >
+      <if test="commentThreadId != null" >
+        comment_thread_id = #{commentThreadId,jdbcType=VARCHAR},
+      </if>
+      <if test="mp3url != null" >
+        mp3url = #{mp3url,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null" >
+        record_id = #{recordId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.netMusic.entity.Song" >
+    update song
+    set comment_thread_id = #{commentThreadId,jdbcType=VARCHAR},
+      mp3url = #{mp3url,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      record_id = #{recordId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

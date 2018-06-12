@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.netMusic.dao.SingerSongMapper" >
+  <resultMap id="BaseResultMap" type="com.netMusic.entity.SingerSong" >
+    <id column="singer_id" property="singerId" jdbcType="INTEGER" />
+    <id column="song_id" property="songId" jdbcType="INTEGER" />
+    <result column="intro" property="intro" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    singer_id, song_id, intro
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.netMusic.entity.SingerSongExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from singer_song
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.netMusic.entity.SingerSongKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from singer_song
+    where singer_id = #{singerId,jdbcType=INTEGER}
+      and song_id = #{songId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.netMusic.entity.SingerSongKey" >
+    delete from singer_song
+    where singer_id = #{singerId,jdbcType=INTEGER}
+      and song_id = #{songId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.netMusic.entity.SingerSongExample" >
+    delete from singer_song
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.netMusic.entity.SingerSong" >
+    insert into singer_song (singer_id, song_id, intro
+      )
+    values (#{singerId,jdbcType=INTEGER}, #{songId,jdbcType=INTEGER}, #{intro,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.netMusic.entity.SingerSong" >
+    insert into singer_song
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="singerId != null" >
+        singer_id,
+      </if>
+      <if test="songId != null" >
+        song_id,
+      </if>
+      <if test="intro != null" >
+        intro,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="singerId != null" >
+        #{singerId,jdbcType=INTEGER},
+      </if>
+      <if test="songId != null" >
+        #{songId,jdbcType=INTEGER},
+      </if>
+      <if test="intro != null" >
+        #{intro,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.netMusic.entity.SingerSongExample" resultType="java.lang.Integer" >
+    select count(*) from singer_song
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update singer_song
+    <set >
+      <if test="record.singerId != null" >
+        singer_id = #{record.singerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.songId != null" >
+        song_id = #{record.songId,jdbcType=INTEGER},
+      </if>
+      <if test="record.intro != null" >
+        intro = #{record.intro,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update singer_song
+    set singer_id = #{record.singerId,jdbcType=INTEGER},
+      song_id = #{record.songId,jdbcType=INTEGER},
+      intro = #{record.intro,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.netMusic.entity.SingerSong" >
+    update singer_song
+    <set >
+      <if test="intro != null" >
+        intro = #{intro,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where singer_id = #{singerId,jdbcType=INTEGER}
+      and song_id = #{songId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.netMusic.entity.SingerSong" >
+    update singer_song
+    set intro = #{intro,jdbcType=VARCHAR}
+    where singer_id = #{singerId,jdbcType=INTEGER}
+      and song_id = #{songId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectBySingerId" parameterType="com.netMusic.entity.SingerSongKey" resultMap="BaseResultMap">
+    select * from  singer_song where singer_id = #{singerId} and  song_id = #{songId}
+  </select>
+</mapper>
